@@ -11,10 +11,9 @@ import com.example.infoapp.ui.theme.InfoAppTheme
 import com.example.infoapp.ui_components.DrawerMenu
 import com.example.infoapp.ui_components.MainTopBar
 
+
 class MainActivity : ComponentActivity() {
-    @SuppressLint("UnusedMaterialScaffoldPaddingParameter",
-        "UnusedMaterial3ScaffoldPaddingParameter"
-    )
+    @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -41,6 +40,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-
-
