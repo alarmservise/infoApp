@@ -1,5 +1,4 @@
 package com.example.infoapp.ui_components
-
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,26 +22,31 @@ import androidx.compose.ui.unit.dp
 import com.example.infoapp.ui.theme.MainRed
 import com.example.infoapp.R
 import com.example.infoapp.ui.theme.BgTransparent
+import com.example.infoapp.utils.DrawerEvents
 
 
 @Composable
-fun DrawerMenu() {
-    Box(modifier = Modifier.fillMaxSize()){
-        Image(painter = painterResource(
-            id = R.drawable.drawer_list_bg),
+fun DrawerMenu(onEvent: (DrawerEvents) -> Unit) {
+    Box(modifier = Modifier.fillMaxSize()) {
+        Image(
+            painter = painterResource(
+                id = R.drawable.drawer_list_bg
+            ),
             contentDescription = "Main Bg image",
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
         )
         Column(modifier = Modifier.fillMaxSize()) {
             Header()
-            Body()
+            Body(){ event ->
+                onEvent(event)
+            }
         }
     }
 }
 
 @Composable
-fun Header(){
+fun Header() {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -76,10 +80,10 @@ fun Header(){
 }
 
 @Composable
-fun Body(){
+fun Body(onEvent: (DrawerEvents) -> Unit) {
     val list = stringArrayResource(id = R.array.drawer_list)
-    LazyColumn(modifier = Modifier.fillMaxSize()){
-        itemsIndexed(list){ idex, title ->
+    LazyColumn(modifier = Modifier.fillMaxSize()) {
+        itemsIndexed(list) { index, title ->
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -91,7 +95,7 @@ fun Body(){
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
-
+                            onEvent(DrawerEvents.OnItemClick(title, index))
                         }
                         .padding(10.dp)
                         .wrapContentWidth(),

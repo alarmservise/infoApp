@@ -7,10 +7,12 @@ import androidx.activity.compose.setContent
 import androidx.compose.material.*
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import com.example.infoapp.ui.theme.InfoAppTheme
 import com.example.infoapp.ui_components.DrawerMenu
 import com.example.infoapp.ui_components.MainTopBar
-
+import com.example.infoapp.utils.DrawerEvents
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -18,6 +20,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val scaffoldState = rememberScaffoldState()
+            val coroutineScope = rememberCoroutineScope()
             val topBarTitle = remember {
                 mutableStateOf("Грибы")
             }
@@ -31,7 +34,16 @@ class MainActivity : ComponentActivity() {
                         )
                     },
                     drawerContent = {
-                        DrawerMenu()
+                        DrawerMenu(){ event ->
+                            when(event){
+                                is DrawerEvents.OnItemClick -> {
+                                    topBarTitle.value = event.title
+                                }
+                            }
+                            coroutineScope.launch {
+                                scaffoldState.drawerState.close()
+                            }
+                        }
                     }
                 ) {
 
