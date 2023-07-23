@@ -4,6 +4,7 @@ import android.graphics.BitmapFactory
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -24,12 +25,16 @@ import com.example.infoapp.ui.theme.MainRed
 import com.example.infoapp.utils.ListItem
 
 @Composable
-fun MainListItem(item: ListItem) {
+fun MainListItem(item: ListItem, onClick: (ListItem) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .height(250.dp)
-            .padding(5.dp),
+            .padding(5.dp)
+            .clickable {
+                onClick(item)
+            }
+        ,
         shape = RoundedCornerShape(10.dp),
         border = BorderStroke(1.dp, MainRed)
     ) {
@@ -39,7 +44,9 @@ fun MainListItem(item: ListItem) {
         ) {
             AssetImage(
                 imageName = item.imageName,
-                contentDescription = item.title)
+                contentDescription = item.title,
+                modifier = Modifier.fillMaxSize()
+            )
             Text(
                 text = item.title,
                 modifier = Modifier
@@ -55,7 +62,7 @@ fun MainListItem(item: ListItem) {
 }
 
 @Composable
-fun AssetImage(imageName: String, contentDescription: String){
+fun AssetImage(imageName: String, contentDescription: String, modifier: Modifier){
     val context = LocalContext.current
     val assetManger = context.assets
     val inputStream = assetManger.open(imageName)
@@ -64,6 +71,6 @@ fun AssetImage(imageName: String, contentDescription: String){
         bitmap = bitMap.asImageBitmap(),
         contentDescription = contentDescription,
         contentScale = ContentScale.Crop,
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier
     )
 }
